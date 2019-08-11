@@ -14,6 +14,7 @@ def pokemon_list(request):
 		serializer = PokemonSerializer(pokemon, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 	elif request.method == 'POST': 
+		print("you ruuuuuuuuuuulllllelelelelle")
 		serializer = PokemonSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
