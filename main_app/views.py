@@ -10,8 +10,8 @@ from rest_framework.response import Response
 def pokemon_list(request):
 	if request.method == 'GET':
 		# Change all this to work for Pokemon. ADD DELETE ROUTE?
-		pokemons = Pokemon.objects.all()
-		serializer = PokemonSerializer(pokemons, many=True)
+		pokemon = Pokemon.objects.all()
+		serializer = PokemonSerializer(pokemon, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 	elif request.method == 'POST': 
 		serializer = PokemonSerializer(data=request.data)
@@ -19,3 +19,19 @@ def pokemon_list(request):
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def pokemon_detail(request, pk):
+	pokemon = Pokemon.objects.get(pk=pk)
+	if request.method == "GET":
+		serializer = PokemonSerializer(pokemon)
+		return Response(serializer.data, status=status.HTTP_200_OK)
+	elif request.method == "PUT":
+		serializer = PokemonSerializer(pokemon, data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == "DELETE":
+		pokemon.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)	
