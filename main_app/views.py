@@ -21,8 +21,8 @@ def pokemon_list(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def pokemon_detail(request, pk):
-	pokemon = Pokemon.objects.get(pk=pk)
+def pokemon_detail(request, name):
+	pokemon = Pokemon.objects.get(name=name)
 	if request.method == "GET":
 		serializer = PokemonSerializer(pokemon)
 		return Response(serializer.data, status=status.HTTP_200_OK)
